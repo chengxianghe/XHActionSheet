@@ -25,7 +25,7 @@
 }
 - (IBAction)onLeftClick:(id)sender {
     
-    XHActionSheet *action = [[XHActionSheet alloc] initWithTitle:@"left退出登录后不会删除任何历史数据, 下次登录依然可以使用本账号, 请牢记你的账号密码~" cancelTitle:@"取消" otherTitles:@[@"退出登录",@"test",@"ABC",@"BCD",@"test",@"ABC",@"BCD",@"ABC"]];
+    XHActionSheet *action = [[XHActionSheet alloc] initWithTitle:@"left退出登录后不会删除任何历史数据, 下次登录依然可以使用本账号, 请牢记你的账号密码~" cancelTitle:@"取消" otherTitles:@[@"退出登录",@"test1",@"test2",@"test3",@"test4",@"test5"]];
     
     [action changeItemTitleColor:[UIColor redColor] withIndex:1];
     
@@ -41,7 +41,9 @@
 
 - (IBAction)onClick:(id)sender {
     
-    XHActionSheet *action = [XHActionSheet showInView:self.view title:@"right退出登录后不会删除任何历史数据, 下次登录依然可以使用本账号, 请牢记你的账号密码~" cancelTitle:@"取消" otherTitles:@[@"退出登录",@"test",@"ABC",@"BCD",@"test",@"ABC",@"BCD",@"ABC"] custom:^(XHActionSheet *actionSheet) {
+    XHActionSheet *action = [XHActionSheet showInView:self.view title:@"right退出登录后不会删除任何历史数据, 下次登录依然可以使用本账号, 请牢记你的账号密码~" cancelTitle:@"取消" otherTitles:@[@"退出登录",@"test1",@"test2",@"test3",@"test4",@"test5"] custom:^(XHActionSheet *actionSheet) {
+        [actionSheet changeActionSheetTitle:@"right"];
+
         [actionSheet changeItemTitleColor:[UIColor redColor] withIndex:1];
 
     } clickIndex:^(NSInteger clickIndex) {
@@ -50,8 +52,7 @@
         NSLog(@"cancel");
     }];
     
-    [action changeItemTitle:@"right" withIndex:100];
-    
+    [action changeActionSheetTitle:@"title啊"];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

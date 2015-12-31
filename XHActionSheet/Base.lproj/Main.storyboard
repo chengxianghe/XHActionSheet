@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="IMG_0592" translatesAutoresizingMaskIntoConstraints="NO" id="e9z-GH-0aY">
@@ -73,7 +73,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="omW-3I-3xQ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="czG-Xw-mDg">
+                    <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="czG-Xw-mDg">
                         <autoresizingMask key="autoresizingMask"/>
                     </tabBar>
                     <connections>

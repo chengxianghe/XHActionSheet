@@ -135,6 +135,7 @@
 @property (nonatomic,   copy) NSString  *cancelTitle;
 @property (nonatomic, strong) NSMutableArray *otherTitles;
 @property (nonatomic,   weak) UIView    *bottomView;
+@property (nonatomic,   weak) UILabel   *titleLabel;     //
 @property (nonatomic,   weak) UIView    *topView;
 @property (nonatomic, strong) UITableView *tableView;     //
 @property (nonatomic, assign) BOOL isShowing;     // 是否正在展示
@@ -174,6 +175,8 @@
                   otherTitles:(NSArray *)otherTitles {
     self = [super init];
     if (self) {
+        [self setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+
         _title = title;
         _cancelTitle = cancelTitle;
         
@@ -193,6 +196,7 @@
 
 - (void)changeActionSheetTitle:(NSString *)title {
     _title = title;
+    _titleLabel.text = _title;
     [self layoutSubviews];
 }
 
@@ -242,6 +246,7 @@
         clickIndex:(XHActionSheetClick)clickIndex
             cancel:(XHActionSheetCancel)cancel {
     
+
     self.clickBlock = clickIndex;
     self.cancelBlock = cancel;
 
@@ -257,6 +262,7 @@
     if (!view) {
         view = [UIApplication sharedApplication].keyWindow;
     }
+    [self setFrame:view.bounds];
 
     [view addSubview:self];
     
@@ -279,13 +285,16 @@
         totalHeight = kMaxHeight;
     }
     
-    [_topView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-    [_bottomView setFrame:CGRectMake(0, kScreenHeight, kScreenWidth, totalHeight)];
+    CGFloat selfW = CGRectGetWidth(self.bounds);
+    CGFloat selfH = CGRectGetHeight(self.bounds);
+    
+    [_topView setFrame:CGRectMake(0, 0, selfW, selfH)];
+    [_bottomView setFrame:CGRectMake(0, selfH, selfW, totalHeight)];
     @weakify(self);
     [UIView animateWithDuration:0.3f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-        [self.topView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - totalHeight)];
+        [self.topView setFrame:CGRectMake(0, 0, selfW, selfH - totalHeight)];
         [self.topView setBackgroundColor:[UIColor colorWithWhite:1 alpha:0.4]];
-        [self.bottomView setFrame:CGRectMake(0, kScreenHeight - totalHeight, kScreenWidth, totalHeight+10)];
+        [self.bottomView setFrame:CGRectMake(0, selfH - totalHeight, selfW, totalHeight+10)];
         
     } completion:^(BOOL finished) {
         @strongify(self);
@@ -294,9 +303,9 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];
         tap.delegate = self;
         [self.topView addGestureRecognizer:tap];
-        [self.bottomView setFrame:CGRectMake(0, kScreenHeight - totalHeight, kScreenWidth, totalHeight)];
+        [self.bottomView setFrame:CGRectMake(0, selfH - totalHeight, selfW, totalHeight)];
         [UIView animateWithDuration:kDefaultAnimateTime animations:^{
-            if (totalHeight > kScreenHeight) {
+            if (totalHeight > selfH) {
                 [self layoutIfNeeded];
             }
         }];
@@ -315,8 +324,9 @@
     NSLog(@"layoutSubviews");
     [super layoutSubviews];
     
-    [self setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-
+    CGFloat selfW = CGRectGetWidth(self.bounds);
+    CGFloat selfH = CGRectGetHeight(self.bounds);
+    
     CGSize size = [_title boundingRectWithSize:KTitleMaxSize
                                        options:NSStringDrawingUsesLineFragmentOrigin
                                     attributes:@{NSFontAttributeName:kTitleFont}
@@ -330,30 +340,27 @@
         totalHeight = kMaxHeight;
     }
 
-    [_topView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - totalHeight)];
+    [_topView setFrame:CGRectMake(0, 0, selfW, selfH - totalHeight)];
     
     // bottomView
-    [_bottomView setFrame:CGRectMake(0, kScreenHeight - totalHeight, kScreenWidth, totalHeight)];
-    _tableView.frame = CGRectMake(0, titleHeight, kScreenWidth, totalHeight - titleHeight - cancelHeight);
+    [_bottomView setFrame:CGRectMake(0, selfH - totalHeight, selfW, totalHeight)];
+    _tableView.frame = CGRectMake(0, titleHeight, selfW, totalHeight - titleHeight - cancelHeight);
     _tableView.bounces = _tableView.contentSize.height > _tableView.frame.size.height;
     _tableView.showsVerticalScrollIndicator = _tableView.bounces;
     
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
-        UIView *effectView = [_bottomView viewWithTag:8080];
+        UIVisualEffectView *effectView = [_bottomView viewWithTag:8080];
         effectView.frame = _bottomView.bounds;
     }
     
-    
-    UIView *titleView = [_bottomView viewWithTag:9090];
-    [titleView setFrame:CGRectMake(0, 0, kScreenWidth, titleHeight)];
-    UILabel *titleLabel = [titleView viewWithTag:9091];
-    [titleLabel setFrame:CGRectMake(10, 0, kScreenWidth - 20, titleHeight)];
+    [_titleLabel.superview setFrame:CGRectMake(0, 0, selfW, titleHeight)];
+    [_titleLabel setFrame:CGRectMake(10, 0, selfW - 20, titleHeight)];
     
     UIButton *cancelBtn = (UIButton *)[_bottomView viewWithTag:kBtnTagBegin];
     if (cancelHeight > 0) {
-        [cancelBtn setFrame:CGRectMake(0, totalHeight - kItemHeight, kScreenWidth, kItemHeight)];
+        [cancelBtn setFrame:CGRectMake(0, totalHeight - kItemHeight, selfW, kItemHeight)];
     } else {
-        [cancelBtn setFrame:CGRectMake(0, totalHeight, kScreenWidth, 0)];
+        [cancelBtn setFrame:CGRectMake(0, totalHeight, selfW, 0)];
     }
 }
 
@@ -366,7 +373,7 @@
     
     //bottomView
     UIView *bottomView = [[UIView alloc] init];
-    bottomView.backgroundColor = [UIColor colorWithRed:223.0/255.0 green:226.0/255.0 blue:236.0/255.0 alpha:0.6];
+    bottomView.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.6];
     [self addSubview:bottomView];
 
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
@@ -397,10 +404,9 @@
     titleLabel.text = _title;
     titleLabel.numberOfLines = 0;
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    [titleLabel setTag:9091];
-    [titleView  setTag:9090];
     [titleView addSubview:titleLabel];
     [bottomView addSubview:titleView];
+    _titleLabel = titleLabel;
     
     UIButton *canceBtn = [self getActionButton];
     [canceBtn setTitle:_cancelTitle forState:UIControlStateNormal];
