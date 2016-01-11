@@ -259,13 +259,15 @@
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
 
+    view = nil;
+    
     if (!view) {
         view = [UIApplication sharedApplication].keyWindow;
     }
-    [self setFrame:view.bounds];
-
-    [view addSubview:self];
+//    [self setFrame:view.bounds];
     
+    [view addSubview:self];
+        
     _isShowing = YES;
 
     [self animationShow];
@@ -305,9 +307,9 @@
         [self.topView addGestureRecognizer:tap];
         [self.bottomView setFrame:CGRectMake(0, selfH - totalHeight, selfW, totalHeight)];
         [UIView animateWithDuration:kDefaultAnimateTime animations:^{
-            if (totalHeight > selfH) {
-                [self layoutIfNeeded];
-            }
+//            if (totalHeight > selfH) {
+//                [self layoutIfNeeded];
+//            }
         }];
     }];
 }
@@ -321,8 +323,13 @@
     if (_isShowing == NO) {
         return;
     }
+    
+    [self setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+
     NSLog(@"layoutSubviews");
     [super layoutSubviews];
+    
+
     
     CGFloat selfW = CGRectGetWidth(self.bounds);
     CGFloat selfH = CGRectGetHeight(self.bounds);
