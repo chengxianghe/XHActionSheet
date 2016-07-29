@@ -8,13 +8,20 @@
 
 #import "XHActionSheet.h"
 
+#ifndef kScreenHeight
 #define kScreenHeight               [UIScreen mainScreen].bounds.size.height
+#endif
+
+#ifndef kScreenWidth
 #define kScreenWidth                [UIScreen mainScreen].bounds.size.width
+#endif
 
 #define kMaxHeight                  (kScreenHeight - 100)
 
 #define kTitleFont                  [UIFont systemFontOfSize:12.0]
 #define KTitleMaxSize               CGSizeMake(kScreenWidth-20, 100)
+
+#define kTopViewBackColor           [UIColor colorWithWhite:0 alpha:0.4]
 
 #define kItemBackColor              [UIColor colorWithRed:1 green:1 blue:1 alpha:0.6]
 #define kItemHighligntBackColor     [UIColor colorWithWhite:1 alpha:0.3]
@@ -87,7 +94,7 @@
         cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"XHActionSheetCell"];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+    
     return cell;
 }
 
@@ -126,7 +133,7 @@
 @implementation ActionSheetItem
 @end
 
-@interface XHActionSheet () <UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
+@interface XHActionSheet () <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 
 @property (nonatomic,   copy) XHActionSheetClick clickBlock;
 @property (nonatomic,   copy) XHActionSheetCancel cancelBlock;
@@ -161,7 +168,7 @@
                                                           cancelTitle:cancelTitle
                                                           otherTitles:otherTitles];
     if (custom) {
-        custom(actionSheet);
+        custom(actionSheet, actionSheet.titleLabel);
     }
     
     [actionSheet showInView:view
@@ -176,7 +183,7 @@
     self = [super init];
     if (self) {
         [self setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-
+        
         _title = title;
         _cancelTitle = cancelTitle;
         
@@ -202,12 +209,12 @@
 
 - (void)changeItemTitleColor:(UIColor *)color
                    withIndex:(NSInteger)index {
-
+    
     if (index >= 0 && index <= _otherTitles.count) {
         if (index == 0) {
             UIButton *btn = [_bottomView viewWithTag:kBtnTagBegin];
             [btn setTitleColor:color forState:UIControlStateNormal];
-
+            
         } else if (index > 0) {
             ActionSheetItem *item = _otherTitles[index - 1];
             item.titleColor = color;
@@ -237,7 +244,7 @@
             if (_isShowing) {
                 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             }
-
+            
         }
     }
 }
@@ -246,10 +253,10 @@
         clickIndex:(XHActionSheetClick)clickIndex
             cancel:(XHActionSheetCancel)cancel {
     
-
+    
     self.clickBlock = clickIndex;
     self.cancelBlock = cancel;
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIApplicationDidChangeStatusBarOrientationNotification
                                                   object:nil];
@@ -258,18 +265,17 @@
                                              selector:@selector(statusBarOrientationChange:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
-
+    
     view = nil;
     
     if (!view) {
         view = [UIApplication sharedApplication].keyWindow;
     }
-//    [self setFrame:view.bounds];
     
     [view addSubview:self];
-        
+    
     _isShowing = YES;
-
+    
     [self animationShow];
 }
 
@@ -295,7 +301,7 @@
     @weakify(self);
     [UIView animateWithDuration:0.3f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
         [self.topView setFrame:CGRectMake(0, 0, selfW, selfH - totalHeight)];
-        [self.topView setBackgroundColor:[UIColor colorWithWhite:1 alpha:0.4]];
+        self.topView.alpha = 1.0;
         [self.bottomView setFrame:CGRectMake(0, selfH - totalHeight, selfW, totalHeight+10)];
         
     } completion:^(BOOL finished) {
@@ -307,9 +313,9 @@
         [self.topView addGestureRecognizer:tap];
         [self.bottomView setFrame:CGRectMake(0, selfH - totalHeight, selfW, totalHeight)];
         [UIView animateWithDuration:kDefaultAnimateTime animations:^{
-//            if (totalHeight > selfH) {
-//                [self layoutIfNeeded];
-//            }
+            //            if (totalHeight > selfH) {
+            //                [self layoutIfNeeded];
+            //            }
         }];
     }];
 }
@@ -319,24 +325,24 @@
 }
 
 -(void)layoutSubviews {
-
+    
     if (_isShowing == NO) {
         return;
     }
     
     [self setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-
+    
     NSLog(@"layoutSubviews");
     [super layoutSubviews];
     
-
+    
     
     CGFloat selfW = CGRectGetWidth(self.bounds);
     CGFloat selfH = CGRectGetHeight(self.bounds);
     
     CGSize size = [_title boundingRectWithSize:KTitleMaxSize
                                        options:NSStringDrawingUsesLineFragmentOrigin
-                                    attributes:@{NSFontAttributeName:kTitleFont}
+                                    attributes:@{NSFontAttributeName:_titleLabel.font}
                                        context:nil].size;
     
     CGFloat titleHeight = size.height == 0 ? 0 : (size.height + 50);
@@ -346,7 +352,7 @@
     if (totalHeight > kMaxHeight) {
         totalHeight = kMaxHeight;
     }
-
+    
     [_topView setFrame:CGRectMake(0, 0, selfW, selfH - totalHeight)];
     
     // bottomView
@@ -371,10 +377,11 @@
     }
 }
 
--(void)configUI{
+- (void)configUI{
     
     UIView *TopView = [[UIView alloc] init];
-    TopView.backgroundColor = [UIColor clearColor];
+    TopView.backgroundColor = kTopViewBackColor;
+    TopView.alpha = 0;
     [self addSubview:TopView];
     _topView = TopView;
     
@@ -382,7 +389,7 @@
     UIView *bottomView = [[UIView alloc] init];
     bottomView.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.6];
     [self addSubview:bottomView];
-
+    
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
         UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
         UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:blur];
@@ -401,7 +408,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     [_bottomView addSubview:_tableView];
-
+    
     // title
     UIView *titleView = [[UIView alloc] init];
     titleView.backgroundColor = kItemBackColor;
@@ -460,14 +467,11 @@
             self.clickBlock(index);
         }
     }];
-
+    
 }
 
 - (void)dismiss:(UITapGestureRecognizer *)tap{
-    if( CGRectContainsPoint(self.frame, [tap locationInView:_bottomView])) {
-        NSLog(@"tap");
-        
-    } else{
+    if(!CGRectContainsPoint(self.frame, [tap locationInView:_bottomView])) {
         @weakify(self);
         [self dismissViewWithCompletion:^{
             @strongify(self);
@@ -509,10 +513,10 @@
     for (id obj in SubViews) {
         [obj removeFromSuperview];
     }
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super removeFromSuperview];
-    NSLog(@"ActionSheet:removeFromSuperview");
+    //    NSLog(@"ActionSheet:removeFromSuperview");
 }
 
 #pragma mark
