@@ -13,7 +13,7 @@ ios 7.0
 xcode 7.3
 
 ### Using CocoaPods
-pod 'XHPopMenu'
+    pod 'XHActionSheet'
 
 ####预览图
 ![image](https://github.com/chengxianghe/watch-gif/blob/master/XHActionsheet.gif?raw=true)
