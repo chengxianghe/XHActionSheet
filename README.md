@@ -2,9 +2,18 @@
 
 OC写的
 
+[![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat
+             )](https://developer.apple.com/iphone/index.action)
+[![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat
+            )](http://mit-license.org)
+![CocoaPods Version](https://img.shields.io/badge/pod-v0.36.4-brightgreen.svg)
+
 ----
 ios 7.0
 xcode 7.3
+
+### Using CocoaPods
+pod 'XHPopMenu'
 
 ####预览图
 ![image](https://github.com/chengxianghe/watch-gif/blob/master/XHActionsheet.gif?raw=true)
