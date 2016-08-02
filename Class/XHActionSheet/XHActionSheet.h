@@ -81,10 +81,12 @@ typedef void(^XHActionSheetCancel)();
  *  展示
  *
  *  @param view         指定的父view, 默认为 keyWindow
+ *  @param custom       定制部分UI
  *  @param clickIndex   点击Item的block
  *  @param cancel       点击背景消失的block
  */
 - (void)showInView:(UIView * _Nullable)view
+            custom:(XHActionSheetCustom _Nullable)custom
         clickIndex:(XHActionSheetClick _Nullable)clickIndex
             cancel:(XHActionSheetCancel _Nullable)cancel;
 @end

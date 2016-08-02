@@ -167,11 +167,9 @@
     XHActionSheet *actionSheet = [[XHActionSheet alloc] initWithTitle:title
                                                           cancelTitle:cancelTitle
                                                           otherTitles:otherTitles];
-    if (custom) {
-        custom(actionSheet, actionSheet.titleLabel);
-    }
     
     [actionSheet showInView:view
+                     custom:custom
                  clickIndex:clickIndex
                      cancel:cancel];
     return actionSheet;
@@ -250,9 +248,13 @@
 }
 
 - (void)showInView:(UIView *)view
-        clickIndex:(XHActionSheetClick)clickIndex
-            cancel:(XHActionSheetCancel)cancel {
+            custom:(XHActionSheetCustom _Nullable)custom
+        clickIndex:(XHActionSheetClick _Nullable)clickIndex
+            cancel:(XHActionSheetCancel _Nullable)cancel {
     
+    if (custom) {
+        custom(self, self.titleLabel);
+    }
     
     self.clickBlock = clickIndex;
     self.cancelBlock = cancel;
@@ -312,11 +314,6 @@
         tap.delegate = self;
         [self.topView addGestureRecognizer:tap];
         [self.bottomView setFrame:CGRectMake(0, selfH - totalHeight, selfW, totalHeight)];
-        [UIView animateWithDuration:kDefaultAnimateTime animations:^{
-            //            if (totalHeight > selfH) {
-            //                [self layoutIfNeeded];
-            //            }
-        }];
     }];
 }
 
@@ -555,5 +552,3 @@
 }
 
 @end
-
-
