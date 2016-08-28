@@ -41,7 +41,7 @@ typedef void(^XHActionSheetCancel)();
 + (instancetype)showInView:(UIView * _Nullable)view
                      title:(NSString * _Nullable)title
                cancelTitle:(NSString * _Nullable)cancelTitle
-               otherTitles:(NSArray * _Nullable)otherTitles
+               otherTitles:(NSArray<__kindof NSString *> * _Nullable)otherTitles
                     custom:(XHActionSheetCustom _Nullable)custom
                 clickIndex:(XHActionSheetClick _Nullable)clickIndex
                     cancel:(XHActionSheetCancel _Nullable)cancel;
@@ -58,7 +58,7 @@ typedef void(^XHActionSheetCancel)();
  */
 - (instancetype)initWithTitle:(NSString * _Nullable)title
                   cancelTitle:(NSString * _Nullable)cancelTitle
-                  otherTitles:(NSArray * _Nullable)otherTitles;
+                  otherTitles:(NSArray<__kindof NSString *> * _Nullable)otherTitles;
 
 /**
  *  改变ActionSheet的标题

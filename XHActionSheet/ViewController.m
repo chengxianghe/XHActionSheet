@@ -29,14 +29,11 @@
     
     [action changeItemTitleColor:[UIColor redColor] withIndex:1];
     
-    
-    [action showInView:nil clickIndex:^(NSInteger clickIndex) {
+    [action showInView:nil custom:nil clickIndex:^(NSInteger clickIndex) {
         NSLog(@"dismiss--%ld", (long)clickIndex);
     } cancel:^{
         NSLog(@"cancel");
     }];
-    
-
 }
 
 - (IBAction)onClick:(id)sender {
