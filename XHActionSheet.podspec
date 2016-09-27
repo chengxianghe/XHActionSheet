@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.description         = <<-DESC
                         It is a custom actionSheet view used on iOS, which implement by Objective-C.
                         DESC
-  s.homepage            = "https://github.com/chengxianghe/XHActionSheet.git"
+  s.homepage            = "https://github.com/chengxianghe/XHActionSheet"
   # s.screenshots       = "https://github.com/chengxianghe/watch-gif/raw/master/XHActionSheet.gif?raw=true"
   s.source              = { :git => "https://github.com/chengxianghe/XHActionSheet.git", :tag => s.version }
 
