@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
                         DESC
   s.homepage            = "https://github.com/chengxianghe/XHActionSheet.git"
   # s.screenshots       = "https://github.com/chengxianghe/watch-gif/raw/master/XHActionSheet.gif?raw=true"
-  s.source       = { :git => "https://github.com/chengxianghe/TUNetworking.git", :tag => s.version }
+  s.source              = { :git => "https://github.com/chengxianghe/XHActionSheet.git", :tag => s.version }
 
   s.license             = "MIT"
   # s.license           = { :type => "MIT", :file => "FILE_LICENSE" }
