@@ -153,7 +153,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    NSLog(@"%s", __func__);
 }
 
 + (instancetype)showInView:(UIView *)view
@@ -318,7 +317,7 @@
 }
 
 - (void)statusBarOrientationChange:(NSNotification *)notification {
-    [self layoutIfNeeded];
+    [self setNeedsLayout];
 }
 
 -(void)layoutSubviews {
@@ -329,10 +328,7 @@
     
     [self setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     
-    NSLog(@"layoutSubviews");
     [super layoutSubviews];
-    
-    
     
     CGFloat selfW = CGRectGetWidth(self.bounds);
     CGFloat selfH = CGRectGetHeight(self.bounds);
