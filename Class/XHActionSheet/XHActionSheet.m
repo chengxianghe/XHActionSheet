@@ -485,7 +485,7 @@
     
     [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         [self.topView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-        [self.topView setBackgroundColor:[UIColor clearColor]];
+        self.topView.alpha = 0;
         [self.bottomView setFrame:CGRectMake(0, kScreenHeight, kScreenWidth, totalHeight)];
     } completion:^(BOOL finished) {
         if (finished) {
@@ -509,7 +509,6 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super removeFromSuperview];
-    //    NSLog(@"ActionSheet:removeFromSuperview");
 }
 
 #pragma mark
