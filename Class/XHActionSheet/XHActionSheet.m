@@ -80,7 +80,7 @@
 
 @interface XHActionSheetCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *titleLabel;     //
+@property (nonatomic, strong) UILabel *titleLabel;
 
 @end
 
@@ -126,8 +126,8 @@
 @end
 
 @interface ActionSheetItem : NSObject
-@property (nonatomic,   copy) NSString  *title;     //
-@property (nonatomic, strong) UIColor   *titleColor;     //
+@property (nonatomic,   copy) NSString  *title;
+@property (nonatomic, strong) UIColor   *titleColor;
 @end
 
 @implementation ActionSheetItem
@@ -142,10 +142,10 @@
 @property (nonatomic,   copy) NSString  *cancelTitle;
 @property (nonatomic, strong) NSMutableArray *otherTitles;
 @property (nonatomic,   weak) UIView    *bottomView;
-@property (nonatomic,   weak) UILabel   *titleLabel;     //
+@property (nonatomic,   weak) UILabel   *titleLabel;
 @property (nonatomic,   weak) UIView    *topView;
-@property (nonatomic, strong) UITableView *tableView;     //
-@property (nonatomic, assign) BOOL isShowing;     // 是否正在展示
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, assign) BOOL isShowing; // 是否正在展示
 
 @end
 
