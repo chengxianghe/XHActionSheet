@@ -1,6 +1,6 @@
 # XHActionSheet
 
-OC写的
+OC写的 支持转屏 支持swift
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat
              )](https://developer.apple.com/iphone/index.action)
@@ -14,5 +14,5 @@ xcode 7.3
 ### Using CocoaPods
     pod 'XHActionSheet'
 
-####预览图
+#### 预览图
 ![image](https://github.com/chengxianghe/watch-gif/blob/master/XHActionsheet.gif?raw=true)
